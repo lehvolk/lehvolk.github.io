@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-2 hidden-sm hidden-xs">
+        <div>
+            <div role="complementary"
+                 class="bs-sidebar hidden-print affix" style="position: fixed; top: 100px;">
+                <ul class="nav bs-sidenav">
+                    <li><a onclick="scrollTo('security');">Security</a></li>
+                    <li><a onclick="scrollTo('web-services');">Web Services</a></li>
+                    <li><a onclick="scrollTo('examples');">Examples</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-10">
+        <div>
+            <div class="page-header" id="security">
+                <h1>Security </h1>
+                This is cryptographic toolkit.
+
+                Class Crypto with static methods provides access for:
+                <ul>
+                    <li>hash (md5, sha1, sha256)</li>
+                    <li>encrypting/decrypting data using working key</li>
+                    <li>tools for base64 and hex representation of data</li>
+                </ul>
+                Class SSL provides ability to create custom SSLSocketFactory based on specific SSL configuration,
+                which can be stored in xml or plain POJO bean.
+
+                Last one is PGP util.
+            </div>
+
+
+            <div class="page-header" id="web-services">
+                <h1>Web services</h1>
+                This is toolkit for working with soap web services. Toolkit provides ability to create soap clients
+                (only cxf and jaxws clients). Toolkit supports functionality to use ssl with server/clients
+                certificates and host verification.
+                <div class="spacer10"></div>
+                Toolkit provides ability to pool configured client (as JDBCConnections in DataSource). This is
+                usefull if configuring ws client is huge operation. WS client's is not thread safe so application
+                can't use one instance of client for all callers. Sometimes (but not always) pooling configured
+                client shows much better performance then creating new client per request.
+            </div>
+
+            <div class="page-header" id="examples">
+                <h1>Examples</h1>
+            </div>
+        </div>
+    </div>
+</div>

@@ -44,7 +44,7 @@
 var docs = angular.module('docs', ['ngRoute']);
 
 docs.config(['$routeProvider',
-    function($routeProvider) {
+    function ($routeProvider) {
         $routeProvider.
             when('/quantile/examples', {
                 templateUrl: 'quantile/examples.html'
@@ -58,7 +58,17 @@ docs.config(['$routeProvider',
                 templateUrl: 'quantile/downloads.html'
 
             }).
+            when('/toolkits', {
+                templateUrl: 'toolkits/toolkits.html'
+
+            }).
             otherwise({
                 redirectTo: '/'
             });
     }]);
+
+function scrollTo(id) {
+    $('html,body').animate({
+        scrollTop: $("#" + id).offset().top - 100
+    });
+}
