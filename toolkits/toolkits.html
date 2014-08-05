@@ -83,113 +83,110 @@ title: Something with codes
 
             SOAP interface:
             {% highlight java %}
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
 
-            import javax.jws.WebMethod;
-            import javax.jws.WebParam;
-            import javax.jws.WebResult;
-            import javax.jws.WebService;
+@WebService(targetNamespace = "http://emample.lehvolk.org/", name = "Processing")
+public interface ProcessingBean {
 
-            @WebService(targetNamespace = "http://emample.lehvolk.org/", name = "Processing")
-            public interface ProcessingBean {
-
-            @WebResult(targetNamespace = "http://emample.lehvolk.org/process")
-            @WebMethod(operationName = "process", action = "http://emample.lehvolk.org/process")
-            public ProcessOutput process(@WebParam ProcessInput input);
-            }
+@WebResult(targetNamespace = "http://emample.lehvolk.org/process")
+@WebMethod(operationName = "process", action = "http://emample.lehvolk.org/process")
+public ProcessOutput process(@WebParam ProcessInput input);
+}
             {% endhighlight %}
 
 
             SOAP service client
             {% highlight java %}
 
-            import java.net.URL;
+import java.net.URL;
 
-            import javax.xml.namespace.QName;
-            import javax.xml.ws.Service;
-            import javax.xml.ws.WebEndpoint;
-            import javax.xml.ws.WebServiceClient;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+import javax.xml.ws.WebEndpoint;
+import javax.xml.ws.WebServiceClient;
 
-            @WebServiceClient(name = "Processing",
-                wsdlLocation = ProcessingService.WSDL_LOCATION,
-                targetNamespace = "http://example.lehvolk.org/")
-            public class ProcessingService extends Service {
+@WebServiceClient(name = "Processing",
+    wsdlLocation = ProcessingService.WSDL_LOCATION,
+    targetNamespace = "http://example.lehvolk.org/")
+public class ProcessingService extends Service {
 
-                public final static String WSDL_LOCATION = "META-INF/wsdl/service.wsdl";
-                public final static QName SERVICE = new QName("http://example.lehvolk.org", "ProcessingService");
-                public final static QName Processing = new QName("http://example.lehvolk.org", "Processing");
+    public final static String WSDL_LOCATION = "META-INF/wsdl/service.wsdl";
+    public final static QName SERVICE = new QName("http://example.lehvolk.org", "ProcessingService");
+    public final static QName Processing = new QName("http://example.lehvolk.org", "Processing");
 
-                public ProcessingService() {
-                    super(getWsdlLocation(), SERVICE);
-                }
+    public ProcessingService() {
+        super(getWsdlLocation(), SERVICE);
+    }
 
-                 @WebEndpoint(name = "Processing")
-                 public ProcessingBean getPort() {
-                     return super.getPort(Processing, ProcessingBean.class);
-                 }
+     @WebEndpoint(name = "Processing")
+     public ProcessingBean getPort() {
+         return super.getPort(Processing, ProcessingBean.class);
+     }
 
-                 private static URL getWsdlLocation() {
-                      return ProcessingService.class.getResource(WSDL_LOCATION);
-                 }
-            }
+     private static URL getWsdlLocation() {
+          return ProcessingService.class.getResource(WSDL_LOCATION);
+     }
+}
             {% endhighlight %}
 
             SOAP clients pool
             {% highlight java %}
+import java.io.File;
+import javax.inject.Singleton;
+import javax.xml.bind.JAXB;
 
-            import java.io.File;
+import org.lehvolk.common.ws.WebServicePort;
+import org.lehvolk.common.ws.pool.AbstractWebServicePortPool;
+import org.lehvolk.common.ws.pool.WSClientConfiguration;
 
-            import javax.inject.Singleton;
-            import javax.xml.bind.JAXB;
+@Singleton
+//@Component
+public class ProcessingWebServicePool extends AbstractWebServicePortPool<ProcessingBean> {
 
-            import org.lehvolk.common.ws.WebServicePort;
-            import org.lehvolk.common.ws.pool.AbstractWebServicePortPool;
-            import org.lehvolk.common.ws.pool.WSClientConfiguration;
+    private ProcessingService service = new ProcessingService();
 
-            @Singleton
-            //@Component
-            public class ProcessingWebServicePool extends AbstractWebServicePortPool&lt;ProcessingBean&gt; {
+     @Override
+     protected WebServicePort<ProcessingBean> createPort(String address) {
+         ProcessingBean bean = service.getPort();
+         WebServicePort<ProcessingBean> port = new WebServicePort<>(bean, null, address);
+         boolean verifyHost = configuration.getSslConfiguration() == null ? false : configuration.getSslConfiguration()
+            .getVerifyHost();
+         return configurator.configurePort(port, address, configuration.getConnectionTimeout(),
+            configuration.getSocketReadTimeout(), sslFactory, verifyHost);
+     }
 
-                private ProcessingService service = new ProcessingService();
-
-                 @Override
-                 protected WebServicePort<ProcessingBean> createPort(String address) {
-                     ProcessingBean bean = service.getPort();
-                     WebServicePort<ProcessingBean> port = new WebServicePort<>(bean, null, address);
-                     boolean verifyHost = configuration.getSslConfiguration() == null ? false : configuration.getSslConfiguration()
-                        .getVerifyHost();
-                     return configurator.configurePort(port, address, configuration.getConnectionTimeout(),
-                        configuration.getSocketReadTimeout(), sslFactory, verifyHost);
-                 }
-
-                 @Override
-                 protected WSClientConfiguration getConfiguration() {
-                    return JAXB.unmarshal(new File("META-INF/conf/ws-conf.xml"), WSClientConfiguration.class);
-                 }
-            }
+     @Override
+     protected WSClientConfiguration getConfiguration() {
+        return JAXB.unmarshal(new File("META-INF/conf/ws-conf.xml"), WSClientConfiguration.class);
+     }
+}
             {% endhighlight %}
 
             Caller service
             {% highlight java %}
 
-            @Stateless
-            //@Service
-            public class SomeBean {
+@Stateless
+//@Service
+public class SomeBean {
 
-                @Inject
-                private ProcessingWebServicePool pool;
+    @Inject
+    private ProcessingWebServicePool pool;
 
-                pubic void call(){
-                    WebServicePort<ProcessingBean> port = pool.getPort();
-                    try{
-                        //logic
-                    } catch(Exception e) {
-                        //exception logic
-                    } finally {
-                        pool.putPort(port);
-                    }
-                }
+    pubic void call(){
+        WebServicePort<ProcessingBean> port = pool.getPort();
+        try{
+            //logic
+        } catch(Exception e) {
+            //exception logic
+        } finally {
+            pool.putPort(port);
+        }
+    }
 
-            }
+}
             {% endhighlight %}
         </div>
     </div>
