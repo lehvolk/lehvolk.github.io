@@ -68,7 +68,7 @@ title: Something with codes
             In this toolkit implemented methods for soap implementations:
             <ul>
                 <li>Apache <a href="http://cxf.apache.org/">CXF</a> - apache soap implementation (jboss wrapper - JBossWS)</li>
-                <li><a href="http://jax-ws.java.net/">JAX-WS</a> - standard text SOAP implementation.</li>
+                <li><a href="http://jax-ws.java.net/">JAX-WS</a> - standard java SOAP implementation.</li>
             </ul>
 
             Toolkit provides ability to create and configure ssl of soap clients (cxf and jaxws clients). Supported ssl server/clients certificates
@@ -82,7 +82,7 @@ title: Something with codes
             Here is an example:
 
             SOAP interface:
-            {% highlight text %}
+            {% highlight java %}
             import javax.jws.WebMethod;
             import javax.jws.WebParam;
             import javax.jws.WebResult;
@@ -99,7 +99,7 @@ title: Something with codes
 
 
             SOAP service client
-            {% highlight text %}
+            {% highlight java %}
             import java.net.URL;
 
             import javax.xml.namespace.QName;
@@ -132,7 +132,7 @@ title: Something with codes
             {% endhighlight %}
 
             SOAP clients pool
-            {% highlight text %}
+            {% highlight java %}
             import java.io.File;
 
             import javax.inject.Singleton;
@@ -149,9 +149,9 @@ title: Something with codes
                 private ProcessingService service = new ProcessingService();
 
                  @Override
-                 protected WebServicePort&lt;ProcessingBean&gt; createPort(String address) {
+                 protected WebServicePort<ProcessingBean> createPort(String address) {
                      ProcessingBean bean = service.getPort();
-                     WebServicePort&lt;ProcessingBean&gt; port = new WebServicePort&lt;ProcessingBean&gt;(bean, null, address);
+                     WebServicePort<ProcessingBean> port = new WebServicePort<>(bean, null, address);
                      boolean verifyHost = configuration.getSslConfiguration() == null ? false : configuration.getSslConfiguration()
                         .getVerifyHost();
                      return configurator.configurePort(port, address, configuration.getConnectionTimeout(),
@@ -166,7 +166,7 @@ title: Something with codes
             {% endhighlight %}
 
             Caller service
-            {% highlight text %}
+            {% highlight java %}
             @Stateless
             //@Service
             public class SomeBean {
@@ -175,7 +175,7 @@ title: Something with codes
                 private ProcessingWebServicePool pool;
 
                 pubic void call(){
-                    WebServicePort&lt;ProcessingBean&gt; port = pool.getPort();
+                    WebServicePort<ProcessingBean> port = pool.getPort();
                     try{
                         //logic
                     } catch(Exception e) {
