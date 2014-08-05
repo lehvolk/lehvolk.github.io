@@ -63,7 +63,7 @@
             In this toolkit implemented methods for soap implementations:
             <ul>
                 <li>Apache <a href="http://cxf.apache.org/">CXF</a> - apache soap implementation (jboss wrapper - JBossWS)</li>
-                <li><a href="http://jax-ws.java.net/">JAX-WS</a> - standard java SOAP implementation.</li>
+                <li><a href="http://jax-ws.java.net/">JAX-WS</a> - standard text SOAP implementation.</li>
             </ul>
 
             Toolkit provides ability to create and configure ssl of soap clients (cxf and jaxws clients). Supported ssl server/clients certificates
@@ -77,7 +77,7 @@
             Here is an example:
 
             SOAP interface:
-            {% highlight java %}
+            {% highlight text %}
             import javax.jws.WebMethod;
             import javax.jws.WebParam;
             import javax.jws.WebResult;
@@ -94,7 +94,7 @@
 
 
             SOAP service client
-            {% highlight java %}
+            {% highlight text %}
             import java.net.URL;
 
             import javax.xml.namespace.QName;
@@ -127,7 +127,7 @@
             {% endhighlight %}
 
             SOAP clients pool
-            {% highlight java %}
+            {% highlight text %}
             import java.io.File;
 
             import javax.inject.Singleton;
@@ -161,7 +161,7 @@
             {% endhighlight %}
 
             Caller service
-            {% highlight java %}
+            {% highlight text %}
             @Stateless
             //@Service
             public class SomeBean {
