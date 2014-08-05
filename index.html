@@ -24,27 +24,31 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Home</a>
+                </li>
+
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" id="themes">Quantile<span
                             class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="themes">
-                        <li><a href="#/quantile/examples">Examples</a></li>
-                        <li><a href="#/quantile/guide">Guide</a></li>
-                        <li><a href="#/quantile/download">Download</a></li>
+                        <li><a href="#quantile/examples">Examples</a></li>
+                        <li><a href="#quantile/guide">Guide</a></li>
+                        <li><a href="#quantile/download">Download</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#/toolkits">Toolkits</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#toolkits">Toolkits</a>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/about" target="_blank">About</a></li>
+                <li><a href="#about" target="_blank">About</a></li>
             </ul>
         </div>
     </div>
 </div>
 
-<section class="container main-body" role="main">
+<section class="container main-body">
     <div class="main-grid main-body-grid">
         <div class="container" ng-view>
         </div>

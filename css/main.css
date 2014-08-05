@@ -3,6 +3,12 @@
     position: relative;
 }
 
+.page-header {
+    border-bottom: 1px solid transparent;
+    margin: 20px 0 21px;
+    padding-bottom: 9.5px;
+}
+
 .spacer10 {
     margin-top: 10px;
 }

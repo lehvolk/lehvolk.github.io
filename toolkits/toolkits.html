@@ -1,51 +1,194 @@
 <div class="row">
-    <div class="col-md-2 hidden-sm hidden-xs">
-        <div>
-            <div role="complementary"
-                 class="bs-sidebar hidden-print affix" style="position: fixed; top: 100px;">
-                <ul class="nav bs-sidenav">
-                    <li><a onclick="scrollTo('security');">Security</a></li>
-                    <li><a onclick="scrollTo('web-services');">Web Services</a></li>
-                    <li><a onclick="scrollTo('examples');">Examples</a></li>
-                </ul>
-            </div>
-        </div>
+
+    <div class="col-md-2">
+        <ul class="nav" style="position: fixed;">
+            <li><a onclick="scrollTo('security');">Security</a></li>
+            <li><a onclick="scrollTo('web-services');">Web Services</a></li>
+        </ul>
     </div>
 
     <div class="col-md-10">
-        <div>
-            <div class="page-header" id="security">
-                <h1>Security </h1>
-                This is cryptographic toolkit.
+        <div class="page-header" id="security">
+            <h1>Security</h1>
+            This is cryptographic toolkit.
+            <h3>
+                Hashes
+            </h3>
+            <ul>
+                <li><code>Crypto.toMD5</code> - md5 hash</li>
+                <li><code>Crypto.toSHA1</code> - sha1 hash</li>
+                <li><code>Crypto.toSHA256</code> - sha-256 hash</li>
+            </ul>
 
-                Class Crypto with static methods provides access for:
-                <ul>
-                    <li>hash (md5, sha1, sha256)</li>
-                    <li>encrypting/decrypting data using working key</li>
-                    <li>tools for base64 and hex representation of data</li>
-                </ul>
-                Class SSL provides ability to create custom SSLSocketFactory based on specific SSL configuration,
-                which can be stored in xml or plain POJO bean.
+            <h3>
+                Encrypting/decrypting
+            </h3>
+            Currently supported only 3 algorithms:
+            <ul>
+                <li><a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> - <code>KeyType.AES</code></li>
+                <li><a href="https://en.wikipedia.org/wiki/Triple_DES">Triple DES</a> - <code>KeyType.TDES</code></li>
+                <li><a href="https://en.wikipedia.org/w/index.php?title=Double_DES">Double DES</a> - <code>KeyType.DDES</code>
+                </li>
+            </ul>
+            RawKeyPackage - declaration of key with data and byte[] with key data. SecretKeyPackage - wrapped structure.
+            <ul>
+                <li><code>Crypto.decrypt / Crypto.decrypt</code> - encrypt/decrypt data using specified key package</li>
+                <li><code>Crypto.createMAC</code> - MAC signature</li>
+                <li><code>Crypto.hmacSign</code> - enerates HmacSHA1 MAC signature for data specified with given key</li>
+                <li><code>Crypto.generateKey</code> - generates key</li>
+                <li><code>Crypto.makeProcessKey</code> - generates process key</li>
+            </ul>
 
-                Last one is PGP util.
-            </div>
+            <h3>
+                BASE64/Hex
+            </h3>
+            <ul>
+                <li><code>Crypto.fromBase64</code> / <code>Crypto.toBase64</code> - base64 encoding</li>
+                <li><code>Crypto.fromHex</code> / <code>Crypto.toHex</code> - hex encoding</li>
+            </ul>
+            <h3>
+                PGP
+            </h3>
+            <code>PGPEncoder.encode</code> - Encrypts data input stream with specified input stream of public key and sign with
+            private key
+            <h3>
+                SSL
+            </h3>
+            <code>SSLConfiguration</code> - pojo bean. configuration for custom ssl configuration
+            <code>SSL.createSSLContext</code> - create SSLContext from specified configuration
+        </div>
+
+        <div class="page-header" id="web-services">
+            <h1>Web services</h1>
+            In this toolkit implemented methods for soap implementations:
+            <ul>
+                <li>Apache <a href="http://cxf.apache.org/">CXF</a> - apache soap implementation (jboss wrapper - JBossWS)</li>
+                <li><a href="http://jax-ws.java.net/">JAX-WS</a> - standard java SOAP implementation.</li>
+            </ul>
+
+            Toolkit provides ability to create and configure ssl of soap clients (cxf and jaxws clients). Supported ssl server/clients certificates
+            and host verification.
+
+            Toolkit provides ability to pool configured client (as JDBCConnections in DataSource). This is usefull if
+            configuring ws client is huge operation. WS client's is not thread safe so application can't use one instance
+            of client for all callers. Sometimes (but not always) pooling configured client shows
+            much better performance then creating new client per request.
+
+            Here is an example:
+
+            SOAP interface:
+            <pre>
+            {% highlight java linenos %}
+            import javax.jws.WebMethod;
+            import javax.jws.WebParam;
+            import javax.jws.WebResult;
+            import javax.jws.WebService;
+
+            @WebService(targetNamespace = "http://emample.lehvolk.org/", name = "Processing")
+            public interface ProcessingBean {
+
+            @WebResult(targetNamespace = "http://emample.lehvolk.org/process")
+            @WebMethod(operationName = "process", action = "http://emample.lehvolk.org/process")
+            public ProcessOutput process(@WebParam ProcessInput input);
+            }
+            {% endhighlight %}
+            </pre>
 
 
-            <div class="page-header" id="web-services">
-                <h1>Web services</h1>
-                This is toolkit for working with soap web services. Toolkit provides ability to create soap clients
-                (only cxf and jaxws clients). Toolkit supports functionality to use ssl with server/clients
-                certificates and host verification.
-                <div class="spacer10"></div>
-                Toolkit provides ability to pool configured client (as JDBCConnections in DataSource). This is
-                usefull if configuring ws client is huge operation. WS client's is not thread safe so application
-                can't use one instance of client for all callers. Sometimes (but not always) pooling configured
-                client shows much better performance then creating new client per request.
-            </div>
+            SOAP service client
+            <pre>
+            {% highlight java linenos %}
+            import java.net.URL;
 
-            <div class="page-header" id="examples">
-                <h1>Examples</h1>
-            </div>
+            import javax.xml.namespace.QName;
+            import javax.xml.ws.Service;
+            import javax.xml.ws.WebEndpoint;
+            import javax.xml.ws.WebServiceClient;
+
+            @WebServiceClient(name = "Processing",
+                wsdlLocation = ProcessingService.WSDL_LOCATION,
+                targetNamespace = "http://example.lehvolk.org/")
+            public class ProcessingService extends Service {
+
+                public final static String WSDL_LOCATION = "META-INF/wsdl/service.wsdl";
+                public final static QName SERVICE = new QName("http://example.lehvolk.org", "ProcessingService");
+                public final static QName Processing = new QName("http://example.lehvolk.org", "Processing");
+
+                public ProcessingService() {
+                    super(getWsdlLocation(), SERVICE);
+                }
+
+                 @WebEndpoint(name = "Processing")
+                 public ProcessingBean getPort() {
+                     return super.getPort(Processing, ProcessingBean.class);
+                 }
+
+                 private static URL getWsdlLocation() {
+                      return ProcessingService.class.getResource(WSDL_LOCATION);
+                 }
+            }
+            {% endhighlight %}
+            </pre>
+
+            SOAP clients pool
+            <pre>
+            {% highlight java linenos %}
+            import java.io.File;
+
+            import javax.inject.Singleton;
+            import javax.xml.bind.JAXB;
+
+            import org.lehvolk.common.ws.WebServicePort;
+            import org.lehvolk.common.ws.pool.AbstractWebServicePortPool;
+            import org.lehvolk.common.ws.pool.WSClientConfiguration;
+
+            @Singleton
+            //@Component
+            public class ProcessingWebServicePool extends AbstractWebServicePortPool&lt;ProcessingBean&gt; {
+
+                private ProcessingService service = new ProcessingService();
+
+                 @Override
+                 protected WebServicePort&lt;ProcessingBean&gt; createPort(String address) {
+                     ProcessingBean bean = service.getPort();
+                     WebServicePort&lt;ProcessingBean&gt; port = new WebServicePort&lt;ProcessingBean&gt;(bean, null, address);
+                     boolean verifyHost = configuration.getSslConfiguration() == null ? false : configuration.getSslConfiguration()
+                        .getVerifyHost();
+                     return configurator.configurePort(port, address, configuration.getConnectionTimeout(),
+                        configuration.getSocketReadTimeout(), sslFactory, verifyHost);
+                 }
+
+                 @Override
+                 protected WSClientConfiguration getConfiguration() {
+                    return JAXB.unmarshal(new File("META-INF/conf/ws-conf.xml"), WSClientConfiguration.class);
+                 }
+            }
+            </pre>
+
+            Caller service
+            <pre>
+            {% highlight java linenos %}
+            @Stateless
+            //@Service
+            public class SomeBean {
+
+                @Inject
+                private ProcessingWebServicePool pool;
+
+                pubic void call(){
+                    WebServicePort&lt;ProcessingBean&gt; port = pool.getPort();
+                    try{
+                        //logic
+                    } catch(Exception e) {
+                        //exception logic
+                    } finally {
+                        pool.putPort(port);
+                    }
+                }
+
+            }
+            {% endhighlight %}
+            </pre>
         </div>
     </div>
 </div>
