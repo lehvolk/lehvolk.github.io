@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Something with codes
+title: documentation for toolkits
 ---
 
 <div class="row">
@@ -39,7 +39,7 @@ title: Something with codes
             <ul>
                 <li><code>Crypto.decrypt / Crypto.decrypt</code> - encrypt/decrypt data using specified key package</li>
                 <li><code>Crypto.createMAC</code> - MAC signature</li>
-                <li><code>Crypto.hmacSign</code> - enerates HmacSHA1 MAC signature for data specified with given key</li>
+                <li><code>Crypto.hmacSign</code> - generates HmacSHA1 MAC signature for data specified with given key</li>
                 <li><code>Crypto.generateKey</code> - generates key</li>
                 <li><code>Crypto.makeProcessKey</code> - generates process key</li>
             </ul>
@@ -73,15 +73,16 @@ title: Something with codes
 
             Toolkit provides ability to create and configure ssl of soap clients (cxf and jaxws clients). Supported ssl server/clients certificates
             and host verification.
-
+            <p></p>
             Toolkit provides ability to pool configured client (as JDBCConnections in DataSource). This is usefull if
             configuring ws client is huge operation. WS client's is not thread safe so application can't use one instance
             of client for all callers. Sometimes (but not always) pooling configured client shows
             much better performance then creating new client per request.
 
-            Here is an example:
+            <p></p>
+            <p></p>
 
-            SOAP interface:
+            Here is an example. SOAP interface:
             {% highlight java %}
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -97,8 +98,10 @@ public ProcessOutput process(@WebParam ProcessInput input);
 }
             {% endhighlight %}
 
-
+            <p></p>
+            <p></p>
             SOAP service client
+            <p></p>
             {% highlight java %}
 
 import java.net.URL;
@@ -121,18 +124,21 @@ public class ProcessingService extends Service {
         super(getWsdlLocation(), SERVICE);
     }
 
-     @WebEndpoint(name = "Processing")
-     public ProcessingBean getPort() {
-         return super.getPort(Processing, ProcessingBean.class);
-     }
+    @WebEndpoint(name = "Processing")
+    public ProcessingBean getPort() {
+        return super.getPort(Processing, ProcessingBean.class);
+    }
 
-     private static URL getWsdlLocation() {
-          return ProcessingService.class.getResource(WSDL_LOCATION);
-     }
+    private static URL getWsdlLocation() {
+         return ProcessingService.class.getResource(WSDL_LOCATION);
+    }
 }
             {% endhighlight %}
+            <p></p>
+            <p></p>
 
             SOAP clients pool
+            <p></p>
             {% highlight java %}
 import java.io.File;
 import javax.inject.Singleton;
@@ -152,10 +158,11 @@ public class ProcessingWebServicePool extends AbstractWebServicePortPool<Process
      protected WebServicePort<ProcessingBean> createPort(String address) {
          ProcessingBean bean = service.getPort();
          WebServicePort<ProcessingBean> port = new WebServicePort<>(bean, null, address);
-         boolean verifyHost = configuration.getSslConfiguration() == null ? false : configuration.getSslConfiguration()
-            .getVerifyHost();
-         return configurator.configurePort(port, address, configuration.getConnectionTimeout(),
-            configuration.getSocketReadTimeout(), sslFactory, verifyHost);
+         boolean verifyHost = configuration.getSslConfiguration() == null ?
+                    false : configuration.getSslConfiguration().getVerifyHost();
+         return configurator.configurePort(port, address,
+              configuration.getConnectionTimeout(),
+              configuration.getSocketReadTimeout(), sslFactory, verifyHost);
      }
 
      @Override
@@ -164,8 +171,11 @@ public class ProcessingWebServicePool extends AbstractWebServicePortPool<Process
      }
 }
             {% endhighlight %}
+            <p></p>
+            <p></p>
 
             Caller service
+            <p></p>
             {% highlight java %}
 
 @Stateless
