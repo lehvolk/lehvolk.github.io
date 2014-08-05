@@ -69,6 +69,6 @@ docs.config(['$routeProvider',
 
 function scrollTo(id) {
     $('html,body').animate({
-        scrollTop: $("#" + id).offset().top - 100
+        scrollTop: $("#" + id).offset().top - 80
     });
 }
