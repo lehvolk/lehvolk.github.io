@@ -18,15 +18,12 @@ docs.config(['$routeProvider',
 
             }).
             otherwise({
-                redirectTo: '/'
+                redirectTo: '/',
+                templateUrl: 'main.html'
             });
     }]);
 
 docs.controller('PageCtrl', function ($scope, $location, $anchorScroll) {
-    $scope.scrollTo = function (id) {
-        $location.hash(id);
-        $anchorScroll();
-    }
 });
 
 docs.directive('scrollOnClick', function () {
@@ -45,4 +42,13 @@ docs.directive('scrollOnClick', function () {
             });
         }
     }
+});
+
+docs.directive('documentation', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        transclude: true,
+        template: '<div class="container"><section class="container main-body"><div class="main-grid main-body-grid"><div class="container" ng-transclude></div></section></div>'
+    };
 });
