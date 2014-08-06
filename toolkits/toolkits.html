@@ -6,9 +6,11 @@ title: documentation for toolkits
 <div class="row">
 
     <div class="col-md-2">
-        <ul class="nav" style="position: fixed;">
-            <li><a onclick="scrollTo('security');">Security</a></li>
-            <li><a onclick="scrollTo('web-services');">Web Services</a></li>
+        <ul class="nav navigation">
+            <li><a scroll-on-click destination="security">Security</a></li>
+            <li><a scroll-on-click destination="web-services">Web Services</a></li>
+            <!--<li><a onclick="scrollTo('security');">Security</a></li>-->
+            <!--<li><a onclick="scrollTo('web-services');">Web Services</a></li>-->
         </ul>
     </div>
 
@@ -35,7 +37,7 @@ title: documentation for toolkits
                 <li><a href="https://en.wikipedia.org/w/index.php?title=Double_DES">Double DES</a> - <code>KeyType.DDES</code>
                 </li>
             </ul>
-            RawKeyPackage - declaration of key with data and byte[] with key data. SecretKeyPackage - wrapped structure.
+            RawKeyPackage - declaration of key, consist of type and byte[] with key data. SecretKeyPackage - wrapped structure.
             <ul>
                 <li><code>Crypto.decrypt / Crypto.decrypt</code> - encrypt/decrypt data using specified key package</li>
                 <li><code>Crypto.createMAC</code> - MAC signature</li>
@@ -44,6 +46,53 @@ title: documentation for toolkits
                 <li><code>Crypto.makeProcessKey</code> - generates process key</li>
             </ul>
 
+            Lets get an example of usage. For example we have to safety store credit card data in database.
+            We need two encryption keys:
+            <ul>
+                <li>first - stored in application server (for example by e-token)</li>
+                <li>second - stored in application database and encrypted by first key</li>
+            </ul>
+            <p></p>
+            Lets choose process key (the first key):
+            <p></p>
+{% highlight java %}
+public class FakeProcessKey extends RawKeyPackage {
+
+    private static byte[] key = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 8, 7, 6, 5, 4, 3 };
+    private static byte[] iv = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 8, 7, 6, 5, 4, 3 };
+    private static final KeyType type = KeyType.AES;
+
+    public FakeProcessKey() {
+        super(key, iv, type);
+    }
+}
+{% endhighlight %}
+            <p></p>
+            <p></p>
+            Lets generates working key (the second key) <code>Crypto.generateRawKey(KeyType.AES)</code>
+            and encrypt it by <code>FakeProcessKey</code>. As a result we have two strings in base64 representation:
+            <ul>
+                <li>cAq9V4+nCTYEhPBpxcTx0SlrFKAHoA05f2tpIZLKeZc=</li>
+                <li>t5hycgvLyH++citGVMkDV/tid2QhQhIvd845MDHj96g=</li>
+            </ul>
+            which can be stored in application database.
+            <p></p>
+
+            To encrypt any data in application we should restore working key from database, decrypt it by process key
+            and encrypt incoming data with the result:
+            <p></p>
+{% highlight java %}
+public static void main(String[] args) throws Exception {
+    String text = "secret data";
+    byte[] encKey = Crypto.fromBase64("cAq9V4+nCTYEhPBpxcTx0SlrFKAHoA05f2tpIZLKeZc=");
+    byte[] encIV = Crypto.fromBase64("t5hycgvLyH++citGVMkDV/tid2QhQhIvd845MDHj96g=");
+
+    byte[] key = Crypto.decrypt(encKey, new FakeProcessKey());
+    byte[] iv = Crypto.decrypt(encIV, new FakeProcessKey());
+
+    System.out.println(Crypto.encryptToBase64(text, new RawKeyPackage(key, iv, KeyType.AES)));
+}
+{% endhighlight %}
             <h3>
                 BASE64/Hex
             </h3>

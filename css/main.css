@@ -12,3 +12,8 @@
 .spacer10 {
     margin-top: 10px;
 }
+
+.navigation {
+    position: fixed;
+    margin-top: 20px;
+}
