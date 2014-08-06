@@ -59,7 +59,7 @@ title: documentation for toolkits
 public class FakeProcessKey extends RawKeyPackage {
 
     private static byte[] key = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 8, 7, 6, 5, 4, 3 };
-    private static byte[] iv = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 8, 7, 6, 5, 4, 3 };
+    private static byte[] iv  = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 8, 7, 6, 5, 4, 3 };
     private static final KeyType type = KeyType.AES;
 
     public FakeProcessKey() {
@@ -69,8 +69,8 @@ public class FakeProcessKey extends RawKeyPackage {
 {% endhighlight %}
             <p></p>
             <p></p>
-            Lets generates working key (the second key) <code>Crypto.generateRawKey(KeyType.AES)</code>
-            and encrypt it by <code>FakeProcessKey</code>. As a result we have two strings in base64 representation:
+            Lets generate working key (the second key) with <code>Crypto.generateRawKey(KeyType.AES)</code>
+            and encrypt it by <code>FakeProcessKey</code>. As a result we have two strings (in base64 representation):
             <ul>
                 <li>cAq9V4+nCTYEhPBpxcTx0SlrFKAHoA05f2tpIZLKeZc=</li>
                 <li>t5hycgvLyH++citGVMkDV/tid2QhQhIvd845MDHj96g=</li>
@@ -79,7 +79,7 @@ public class FakeProcessKey extends RawKeyPackage {
             <p></p>
 
             To encrypt any data in application we should restore working key from database, decrypt it by process key
-            and encrypt incoming data with the result:
+            and encrypt incoming data with the decryption result:
             <p></p>
 {% highlight java %}
 public static void main(String[] args) throws Exception {
@@ -109,6 +109,7 @@ public static void main(String[] args) throws Exception {
                 SSL
             </h3>
             <code>SSLConfiguration</code> - pojo bean. configuration for custom ssl configuration
+            <p></p>
             <code>SSL.createSSLContext</code> - create SSLContext from specified configuration
         </div>
 
@@ -131,7 +132,7 @@ public static void main(String[] args) throws Exception {
             <p></p>
             <p></p>
 
-            Here is an example. SOAP interface:
+            Here is an example. Check out SOAP interface:
             {% highlight java %}
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
