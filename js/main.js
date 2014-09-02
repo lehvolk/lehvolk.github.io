@@ -3,8 +3,20 @@ var docs = angular.module('docs', ['ngRoute']);
 docs.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.
+            when('/about', {
+                templateUrl: 'about.html'
+
+            }).
+            when('/quantile/why', {
+                templateUrl: 'quantile/why.html'
+
+            }).
             when('/quantile/examples', {
                 templateUrl: 'quantile/examples.html'
+
+            }).
+            when('/quantile/install', {
+                templateUrl: 'quantile/install.html'
 
             }).
             when('/quantile/guide', {
@@ -49,6 +61,13 @@ docs.directive('documentation', function() {
         restrict: 'E',
         replace: true,
         transclude: true,
-        template: '<div class="container"><section class="container main-body"><div class="main-grid main-body-grid"><div class="container" ng-transclude></div></section></div>'
+        template:
+            '<div class="container">' +
+                '<section class="container main-body">' +
+                    '<div class="main-grid main-body-grid">' +
+                        '<div class="container" ng-transclude/>' +
+                    '</div>' +
+                '</section>' +
+            '</div>'
     };
 });

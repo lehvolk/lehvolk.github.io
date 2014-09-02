@@ -153,6 +153,16 @@ body {
     }
 }
 
-.caret{
+.caret {
     margin-bottom: 5px;
+}
+
+.doc-header {
+    margin-top: -10px;
+}
+
+.about-me {
+    margin-top: 100px;
+    margin-left: 10px;
+
 }
