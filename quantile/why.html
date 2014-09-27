@@ -11,7 +11,7 @@
         </div>
 
         <div class="col-md-10">
-            <div class="page-header doc-header" id="quantile">
+            <div class="page-header doc-header" id="why">
                 <h1>Why Quantile?</h1>
 
                 There are two main projects for statistical computing:
@@ -19,14 +19,16 @@
                     <li><a href="http://www.r-project.org/">R</a> programming language</li>
                     <li><a href="http://julialang.org/">Julia</a> programming language</li>
                 </ul>
-                Also there are mathematical packages like Octave, MatLab, Maple, Mathematica and others.
+                There are mathematical packages like Octave, MatLab, Maple, Mathematica and others.
 
-                There are one common thing: all of them provides
-                <bold>new</bold>
-                programming language
-                with interpreter.
+                <p></p>
 
-                This brings some overhead for package:
+                There is one common thing - all of them provides
+                <b>new</b>
+                programming language with interpreter.
+                <p></p>
+                <p></p>
+                This brings overhead for package:
                 <ul>
                     <li>some functions/structures is written with this language and each call
                         of such function brings new work for slow interpreter
@@ -35,37 +37,39 @@
                         protocol
                     </li>
                 </ul>
-                Some packages are not opensource, some are paid software.
+                Some packages are not open-source, some are paid software.
 
                 Quantile is intended to solve this problem:
                 <p></p>
-                    1) Quantile uses <a href="http://www.scala-lang.org/">Scala</a> programming language wth rich API for working with data structures
+                1) Quantile uses <a href="http://www.scala-lang.org/">Scala</a> programming language with rich possibilities
+                    (available api for working with data structures and is great).
                 <p></p>
-                    2) Code runs in fast environment of JVM
+                2) Code runs in fast environment of JVM with built-in JIT compiler.
                 <p></p>
-                    3) Easy using of multi-threading paradigm from Scala/<a href="http://akka.io/">Akka</a>
+                3) Easy using of multi-threading paradigm from Scala/<a href="http://akka.io/">Akka framework</a>.
                 <p></p>
-                    4) All Scala/Java instruments can be used:
-                    <ul>
-                        <li>connectors to databases (SQL and NoSQL)</li>
-                        <li>ability to use enterprise clusters (from Java specific clusters such Hazelcast to BigData)</li>
-                        <li>tons of frameworks for working with xml, file systems, protocols and others</li>
-                    </ul>
+                4) All Scala/Java instruments can be used:
+                <ul>
+                    <li>connectors to databases (SQL and NoSQL)</li>
+                    <li>ability to use enterprise clusters (from Java specific clusters such Hazelcast to BigData)</li>
+                    <li>tons of frameworks for working with json, xml, low-level protocols and others</li>
+                </ul>
                 <p></p>
-                    6) Ability to write code in Object Oriented or Functional style
+                5) Scala brings ability to write code in Object Oriented or Functional style.
                 <p></p>
-                    7) All solutions are well tested in enterprise projects.
+                6) All solutions are well tested in enterprise projects.
                 <p></p>
-                    8) Software is cross-platform so it can be run on all platforms where JVM can e run
+                7) Software is cross-platform so it can be run on all platforms where JVM can e run.
                 <p></p>
-                    9) Best development environments (<a href="http://www.jetbrains.com/idea/">IDEA</a> and <a
-                        href="https://www.eclipse.org/">Eclipse</a>) also exists builtin GUI interface
+                8) Best development environments (<a href="http://www.jetbrains.com/idea/">IDEA</a> and <a
+                    href="https://www.eclipse.org/">Eclipse</a>) with built-in GUI interface
                 <p></p>
+
                 <p></p>
 
                 All this benefits has an revert size:
                 <p></p>
-                    1) JVM consumes mach hardware resources from then standard package environment
+                1) JVM consumes mach hardware resources from then standard package environment
                 <p></p>
                 2) every time you run code Scala compiles your script into JVM bytecode. Rich possibilities of Scala
                 language make this compiler slow. So developer doesn't see speed increase on simple or atomic operations.
