@@ -3,20 +3,91 @@
 
         <div class="col-md-2">
             <ul class="nav navigation">
+                <li><a scroll-on-click destination="why">Why Quantile?</a></li>
                 <li><a scroll-on-click destination="use-cases">Use cases</a></li>
-                <li><a scroll-on-click destination="r">R Comparation</a></li>
+                <li><a scroll-on-click destination="r">R Comparison</a></li>
+                <li><a scroll-on-click destination="julia">Julia Comparison</a></li>
             </ul>
         </div>
 
         <div class="col-md-10">
-            <div class="page-header doc-header" id="r">
+            <div class="page-header doc-header" id="quantile">
+                <h1>Why Quantile?</h1>
+
+                There are two main projects for statistical computing:
+                <ul>
+                    <li><a href="http://www.r-project.org/">R</a> programming language</li>
+                    <li><a href="http://julialang.org/">Julia</a> programming language</li>
+                </ul>
+                Also there are mathematical packages like Octave, MatLab, Maple, Mathematica and others.
+
+                There are one common thing: all of them provides
+                <bold>new</bold>
+                programming language
+                with interpreter.
+
+                This brings some overhead for package:
+                <ul>
+                    <li>some functions/structures is written with this language and each call
+                        of such function brings new work for slow interpreter
+                    </li>
+                    <li>each time package developers implements instruments such as implementation of JIT, multi-threading, http
+                        protocol
+                    </li>
+                </ul>
+                Some packages are not opensource, some are paid software.
+
+                Quantile is intended to solve this problem:
+                <p></p>
+                    1) Quantile uses <a href="http://www.scala-lang.org/">Scala</a> programming language wth rich API for working with data structures
+                <p></p>
+                    2) Code runs in fast environment of JVM
+                <p></p>
+                    3) Easy using of multi-threading paradigm from Scala/<a href="http://akka.io/">Akka</a>
+                <p></p>
+                    4) All Scala/Java instruments can be used:
+                    <ul>
+                        <li>connectors to databases (SQL and NoSQL)</li>
+                        <li>ability to use enterprise clusters (from Java specific clusters such Hazelcast to BigData)</li>
+                        <li>tons of frameworks for working with xml, file systems, protocols and others</li>
+                    </ul>
+                <p></p>
+                    6) Ability to write code in Object Oriented or Functional style
+                <p></p>
+                    7) All solutions are well tested in enterprise projects.
+                <p></p>
+                    8) Software is cross-platform so it can be run on all platforms where JVM can e run
+                <p></p>
+                    9) Best development environments (<a href="http://www.jetbrains.com/idea/">IDEA</a> and <a
+                        href="https://www.eclipse.org/">Eclipse</a>) also exists builtin GUI interface
+                <p></p>
+                <p></p>
+
+                All this benefits has an revert size:
+                <p></p>
+                    1) JVM consumes mach hardware resources from then standard package environment
+                <p></p>
+                2) every time you run code Scala compiles your script into JVM bytecode. Rich possibilities of Scala
+                language make this compiler slow. So developer doesn't see speed increase on simple or atomic operations.
+                <p></p>
+
+            </div>
+
+            <div class="page-header" id="use-cases">
                 <h1>Use cases</h1>
+
+
+            </div>
+            <div class="page-header" id="r">
+                <h1>R Comparison</h1>
                 TODO
             </div>
-            <div class="page-header" id="security">
-                <h1>R Comparation</h1>
+
+            <div class="page-header" id="julia">
+                <h1>Julia Comparison</h1>
                 TODO
             </div>
+
         </div>
     </div>
 </documentation>
