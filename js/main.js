@@ -1,5 +1,17 @@
+function fixScrollup() {
+    var
+        $scrollup = $('.scrollup'),
+        $body = $('body'),
+        $window = $(window);
+    if ($body.height() > $window.height()) {
+        $scrollup.show();
+    } else {
+        $scrollup.hide();
+    }
+}
+
 angular.module('docs', ['ngRoute']).config(['$routeProvider',
-    function ($routeProvider) {
+    function($routeProvider) {
         $routeProvider.
             when('/about', {
                 templateUrl: 'about.html'
@@ -26,12 +38,12 @@ angular.module('docs', ['ngRoute']).config(['$routeProvider',
                 redirectTo: '/',
                 templateUrl: 'main.html'
             });
-    }]).directive('scrollOnClick', function () {
+    }]).directive('scrollOnClick', function() {
     return {
         restrict: 'A',
-        link: function (scope, $elm, attrs) {
+        link: function(scope, $elm, attrs) {
             var idToScroll = attrs.destination;
-            $elm.on('click', function () {
+            $elm.on('click', function() {
                 var $target;
                 if (idToScroll) {
                     $target = $("#" + idToScroll);
@@ -42,7 +54,7 @@ angular.module('docs', ['ngRoute']).config(['$routeProvider',
             });
         }
     }
-}).directive('documentation', function () {
+}).directive('documentation', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -55,4 +67,13 @@ angular.module('docs', ['ngRoute']).config(['$routeProvider',
         '</section>' +
         '</div>'
     };
+});
+
+
+$(document).ready(function() {
+    fixScrollup();
+    $(window).scroll(function() {
+        fixScrollup();
+    });
+
 });
