@@ -60,13 +60,10 @@
         </div>
     </div>
 </header>
-<main class="container-fluid main-section">
-    <div id="topdiv"></div>
-    <div ng-view on-load="fixScrollup();">
-    </div>
+<main class="container-fluid main-section" ng-view on-load="fixScrollup();">
 </main>
 
-<footer class="footer">
+<div class="footer">
     <div class="container text-center">
         <p>
             Code licensed under the
@@ -75,7 +72,7 @@
             2012-2015
         </p>
     </div>
-</footer>
+</div>
 <a class="scrollup" style="display: inline;" scroll-on-click destination="topdiv"><i class="fa fa-angle-up"></i></a>
 </body>
 </html>

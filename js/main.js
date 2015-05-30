@@ -59,10 +59,11 @@ angular.module('docs', ['ngRoute']).config(['$routeProvider',
         restrict: 'E',
         replace: true,
         transclude: true,
-        template: '<div class="container">' +
-        '<section class="container main-body">' +
+        template: '<div class="row">' +
+        '<div class="col-md-2"></div>' +
+        '<section class="main-body col-md-10">' +
         '<div class="main-grid main-body-grid">' +
-        '<div class="container" ng-transclude/>' +
+        '<div ng-transclude/>' +
         '</div>' +
         '</section>' +
         '</div>'
@@ -75,5 +76,4 @@ $(document).ready(function() {
     $(window).scroll(function() {
         fixScrollup();
     });
-
 });
