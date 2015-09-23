@@ -11,7 +11,7 @@ function fixScrollup() {
 }
 
 angular.module('docs', ['ngRoute']).config(['$routeProvider',
-    function($routeProvider, $locationProvider) {
+    function($routeProvider) {
         $routeProvider.
             when('/about', {
                 templateUrl: 'about.html'
@@ -38,7 +38,6 @@ angular.module('docs', ['ngRoute']).config(['$routeProvider',
                 redirectTo: '/',
                 templateUrl: 'main.html'
             });
-        $locationProvider.html5mode(true);
     }]).directive('scrollOnClick', function() {
     return {
         restrict: 'A',
